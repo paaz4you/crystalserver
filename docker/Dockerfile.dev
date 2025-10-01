@@ -1,5 +1,5 @@
 # Stage 1: Download all dependencies
-FROM ubuntu:24.04 AS dependencies
+FROM ubuntu:24.10 AS dependencies
 
 RUN --mount=type=cache,target=/var/cache/apt \
 	apt-get update && apt-get install -y --no-install-recommends cmake git \
@@ -33,7 +33,7 @@ COPY recompile.sh CMakeLists.txt CMakePresets.json vcpkg.json ./
 RUN ./recompile.sh "/opt"
 
 # Stage 3: execute
-FROM ubuntu:24.04 AS prod
+FROM ubuntu:24.10 AS prod
 COPY --from=build /srv/build/build/linux-release/bin/crystalserver /bin/crystalserver
 WORKDIR /srv/crystalserver
 ENTRYPOINT ["/srv/crystalserver/start.sh", "crystalserver"]
